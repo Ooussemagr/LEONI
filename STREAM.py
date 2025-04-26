@@ -183,7 +183,7 @@ st.title("Welcome")
 
 # Home page
 if st.session_state['current_page'] == "Accueil":
-    st.image("assets/logo.png", width=150)
+    st.image("https://raw.githubusercontent.com/votre-utilisateur/leoni/main/assets/logo.png", width=150)
 
 # Sidebar navigation
 if st.session_state['logged_in']:
