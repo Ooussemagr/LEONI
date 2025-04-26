@@ -34,12 +34,12 @@ def validate_password(password):
     return True, "Password is valid"
 
 @st.cache_resource
+
 def init_mongo_connection():
     try:
         # Configuration recommandée pour MongoDB Atlas
         uri = st.secrets["mongo"]["uri"]  # À stocker dans les secrets Streamlit
-        
-                uri = st.secrets["mongo"]["uri"]
+
         client = MongoClient(
             uri,
             serverSelectionTimeoutMS=5000,
@@ -48,7 +48,6 @@ def init_mongo_connection():
             retryWrites=True,
             retryReads=True
         )
-
         
         # Vérification de la connexion
         client.admin.command('ping')
