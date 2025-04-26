@@ -10,7 +10,9 @@ import re
 from datetime import datetime, timedelta
 from streamlit import toast
 import csv
-
+import dns.resolver
+dns.resolver.default_resolver = dns.resolver.Resolver(configure=False)
+dns.resolver.default_resolver.nameservers = ['8.8.8.8']  # Utiliser Google DNS
 # Clear caches
 st.cache_data.clear()
 st.cache_resource.clear()
@@ -31,11 +33,34 @@ def validate_password(password):
         return False, "Password must contain at least one digit"
     return True, "Password is valid"
 
-# MongoDB Connection
-uri = "mongodb+srv://<username>:<password>@cluster.mongodb.net/<dbname>?retryWrites=true&w=majority"
-client = MongoClient(uri, 
-                    serverSelectionTimeoutMS=5000,
-                    connectTimeoutMS=30000)
+@st.cache_resource
+def init_mongo_connection():
+    try:
+        # Configuration recommandée pour MongoDB Atlas
+        uri = st.secrets["mongo"]["uri"]  # À stocker dans les secrets Streamlit
+        
+        client = MongoClient(
+            uri,
+            serverSelectionTimeoutMS=5000,
+            connectTimeoutMS=10000,
+            socketTimeoutMS=30000,
+            retryWrites=True,
+            retryReads=True
+        )
+        
+        # Vérification de la connexion
+        client.admin.command('ping')
+        st.success("✅ Connecté à MongoDB avec succès!")
+        return client
+        
+    except Exception as e:
+        st.error(f"❌ Échec de la connexion MongoDB: {str(e)}")
+        return None
+
+# Initialisation de la connexion
+client = init_mongo_connection()
+if client is None:
+    st.stop() 
 db = client['LEONI']
 users_collection = db['users']
 logins_collection = db['logins']
