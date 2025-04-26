@@ -41,6 +41,8 @@ def init_mongo_connection():
         
         client = MongoClient(
             uri,
+            [mongo]
+uri = "mongodb+srv://username:password@cluster.mongodb.net/LEONI?retryWrites=true&w=majority"
             serverSelectionTimeoutMS=5000,
             connectTimeoutMS=10000,
             socketTimeoutMS=30000,
