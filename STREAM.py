@@ -32,7 +32,10 @@ def validate_password(password):
     return True, "Password is valid"
 
 # MongoDB Connection
-client = MongoClient('mongodb://localhost:27017')
+uri = "mongodb+srv://<username>:<password>@cluster.mongodb.net/<dbname>?retryWrites=true&w=majority"
+client = MongoClient(uri, 
+                    serverSelectionTimeoutMS=5000,
+                    connectTimeoutMS=30000)
 db = client['LEONI']
 users_collection = db['users']
 logins_collection = db['logins']
