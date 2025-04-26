@@ -40,7 +40,7 @@ def init_mongo_connection():
         uri = st.secrets["mongo"]["uri"]  # À stocker dans les secrets Streamlit
         
         client = MongoClient(
-            uri,
+            uri = st.secrets["mongo"]["uri"]
 
 uri = "mongodb+srv://username:password@cluster.mongodb.net/LEONI?retryWrites=true&w=majority"
             serverSelectionTimeoutMS=5000,
