@@ -39,16 +39,16 @@ def init_mongo_connection():
         # Configuration recommandée pour MongoDB Atlas
         uri = st.secrets["mongo"]["uri"]  # À stocker dans les secrets Streamlit
         
+                uri = st.secrets["mongo"]["uri"]
         client = MongoClient(
-            uri = st.secrets["mongo"]["uri"]
-
-uri = "mongodb+srv://username:password@cluster.mongodb.net/LEONI?retryWrites=true&w=majority"
+            uri,
             serverSelectionTimeoutMS=5000,
             connectTimeoutMS=10000,
             socketTimeoutMS=30000,
             retryWrites=True,
             retryReads=True
         )
+
         
         # Vérification de la connexion
         client.admin.command('ping')
